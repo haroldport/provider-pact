@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="SBT: com.atlassian.oai:swagger-request-validator-core:1.0.6:jar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.ivy2/cache/com.atlassian.oai/swagger-request-validator-core/jars/swagger-request-validator-core-1.0.6.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.ivy2/cache/com.atlassian.oai/swagger-request-validator-core/srcs/swagger-request-validator-core-1.0.6-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="SBT: org.codehaus.groovy:groovy-all:2.4.6:indy:jar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.ivy2/cache/org.codehaus.groovy/groovy-all/jars/groovy-all-2.4.6-indy.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
