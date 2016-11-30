@@ -44,7 +44,7 @@ class PactProviderTest extends FunSuiteLike with CorsSupport with BootedCore wit
   }
 
   val SWAGGER_URL = "http://localhost:5000/api-docs/swagger.json"
-  val pactDir = "/Users/Harold/projects/provider-pact/target/pacts"
+  val pactDir = "/Users/Harold/projects/provider-pact/src/main/resources/pacts"
 
   test("validateCmd WHEN messageId is empty SHOULD return (None, None)") {
     val bindingFuture: Future[ServerBinding] = startWebServer()
