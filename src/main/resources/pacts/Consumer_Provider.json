@@ -22,6 +22,22 @@
         },
         "body" : ""
       }
+    },
+    {
+      "providerState" : "Results: Bob, Fred, Harry",
+      "description" : "Fetching results",
+      "request" : {
+        "method" : "GET",
+        "path" : "/questions/test"
+      },
+      "response" : {
+        "status" : 200,
+        "body" : {
+          "id" : "test",
+          "title" : "MyTitle1",
+          "text" : "The text of my question 1"
+        }
+      }
     }
   ]
 }
