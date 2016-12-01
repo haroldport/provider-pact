@@ -7,6 +7,7 @@ import java.io.File
 import java.nio.file.attribute.BasicFileAttributes
 import java.nio.file.{Files, Paths}
 
+import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.Http.ServerBinding
 import com.atlassian.oai.validator.pact.PactProviderValidator
@@ -16,23 +17,25 @@ import akka.util.Timeout
 import com.latamautos.resources.CorsSupport
 import com.typesafe.config.ConfigFactory
 
-import scala.concurrent.{Await, Future}
+import scala.concurrent.Future
 import scala.concurrent.duration._
 
-class PactProviderTest extends FunSuiteLike with CorsSupport with BootedCore with RestInterface {
+class PactProviderTest extends FunSuiteLike with CorsSupport with RestInterface {
   val config = ConfigFactory.load()
   val host = config.getString("http.host")
   val port = config.getInt("http.port")
+
+  implicit override lazy val system = ActorSystem("quiz-management-service")
 
   implicit val materializer = ActorMaterializer()
   implicit val executionContext = system.dispatcher
   implicit val timeout = Timeout(10 seconds)
 
-  val routeSwagger = routes
+  def routeSwagger = routes
 
-  def startWebServer(): Future[ServerBinding] = {
-    val bindingFuture: Future[ServerBinding] = Http().bindAndHandle(routeSwagger, host, port)
-    bindingFuture
+  Http().bindAndHandle(routeSwagger, host, port) map { binding =>
+    println(s"REST interface bound to ${binding.localAddress}") } recover { case ex =>
+    println(s"REST interface could not bind to $host:$port", ex.getMessage)
   }
 
   def stopWebServer(bindingFuture: Future[ServerBinding]): Unit = {
@@ -47,14 +50,10 @@ class PactProviderTest extends FunSuiteLike with CorsSupport with BootedCore wit
   val pactDir = "/Users/Harold/projects/provider-pact/src/main/resources/pacts"
 
   test("validateCmd WHEN messageId is empty SHOULD return (None, None)") {
-    val bindingFuture: Future[ServerBinding] = startWebServer()
-    Await.ready(bindingFuture, Duration.Inf)
-    println(s"--bindingFuture-->>>> $bindingFuture")
     val validator: PactProviderValidator = PactProviderValidator.createFor(SWAGGER_URL).withConsumer("ExampleConsumer", gelLastPactFile.get.getAbsolutePath).build
     println("======================validator.validate() = " + validator.validate().hasErrors)
-    println("======================validato r.validate() = " + validator.validate().getValidationFailureReport)
+    println("======================validator.validate() = " + validator.validate().getValidationFailureReport)
     assert(!validator.validate().hasErrors)
-    stopWebServer(bindingFuture)
   }
 
   def gelLastPactFile:Option[File] = {

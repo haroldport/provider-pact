@@ -13,6 +13,7 @@ libraryDependencies ++= {
   val akkaVersion = "2.4.12"
   val Json4sVersion = "3.2.11"
   val swaggerRequestValidatorVersion = "1.0.6"
+  val http4sVersion = "0.14.8a"
   Seq(
     "com.typesafe.akka" %% "akka-actor" % akkaVersion,
     "com.typesafe.akka" %% "akka-http" % "10.0.0",
@@ -21,6 +22,8 @@ libraryDependencies ++= {
     "org.json4s" %% "json4s-native" % Json4sVersion,
     "org.json4s" %% "json4s-ext" % Json4sVersion,
     "com.github.swagger-akka-http" %% "swagger-akka-http" % "0.7.2",
+    "com.fasterxml.jackson.core" % "jackson-databind" % "2.7.4",
+    "com.fasterxml.jackson.module" % "jackson-module-scala_2.11" % "2.7.2",
     "de.heikoseeberger" %% "akka-http-json4s" % "1.4.2",
     "com.atlassian.oai" % "swagger-request-validator-pact" % swaggerRequestValidatorVersion % "test",
     "au.com.dius" % "pact-jvm-provider_2.11" % "3.2.6" % "test",
