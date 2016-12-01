@@ -28,7 +28,8 @@ libraryDependencies ++= {
     "com.atlassian.oai" % "swagger-request-validator-pact" % swaggerRequestValidatorVersion % "test",
     "au.com.dius" % "pact-jvm-provider_2.11" % "3.2.6" % "test",
     "org.scalatest"  %% "scalatest"           % "2.2.1" % "test",
-    "com.itv"        %% "scalapact-scalatest" % "2.0.0" % "test"
+    "com.itv"        %% "scalapact-scalatest" % "2.0.0" % "test",
+    "com.amazonaws" % "aws-java-sdk" % "1.11.60" % "test"
   )
 }
 
