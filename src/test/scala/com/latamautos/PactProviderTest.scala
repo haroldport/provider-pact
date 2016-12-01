@@ -3,8 +3,8 @@ package com.latamautos
 /**
   * Created by Harold on 25/11/16.
   */
-import java.io.File
-import java.net.URL
+import java.io.{File, IOException}
+import java.net.{ServerSocket, URL}
 import java.nio.file.attribute.BasicFileAttributes
 import java.nio.file.{Files, Paths}
 
@@ -23,7 +23,7 @@ import scala.collection.JavaConverters._
 class PactProviderTest extends FunSuiteLike with CorsSupport with RestInterface {
   val config = ConfigFactory.load()
   val host = config.getString("http.host")
-  val port = config.getInt("http.port")
+  val port = findFreePort()
 
   implicit override lazy val system = ActorSystem("quiz-management-service")
 
@@ -40,10 +40,12 @@ class PactProviderTest extends FunSuiteLike with CorsSupport with RestInterface 
 
   val amazonS3Files: AmazonS3Files = new AmazonS3Files
 
-  val SWAGGER_URL = "http://localhost:5000/api-docs/swagger.json"
+  val SWAGGER_URL = s"http://localhost:$port/api-docs/swagger.json"
   val pactDir = "/Users/Harold/projects/provider-pact/src/main/resources/pacts"
 
   test("validateCmd WHEN messageId is empty SHOULD return (None, None)") {
+    println(s"SWAGGER_URL----->>>>>>>>>>> $SWAGGER_URL")
+
     amazonS3Files.listfiles("microservice-p1").asScala.foreach(url => {
       println(s"url------>>>>>>>>>>>>>>>>>>> $url")
       val validator: PactProviderValidator = PactProviderValidator.createFor(SWAGGER_URL).withConsumer("ExampleConsumer", new URL(url)).build
@@ -63,6 +65,36 @@ class PactProviderTest extends FunSuiteLike with CorsSupport with RestInterface 
       case file::files => Some(file)
       case Nil => None
     }
+  }
+
+  private def findFreePort(): Int = {
+    val socket: ServerSocket = new ServerSocket(0)
+    var port = -1
+
+    try {
+      socket.setReuseAddress(true)
+      port = socket.getLocalPort
+
+      try {
+        socket.close()
+      } catch {
+        // Ignore IOException on close()
+        case e: IOException =>
+      }
+    } catch{
+      case e: IOException =>
+    } finally {
+      if (socket != null) {
+        try {
+          socket.close()
+        } catch {
+          case e: IOException =>
+        }
+      }
+    }
+
+    if(port == -1) throw new IllegalStateException("Could not find a free TCP/IP port to start embedded Jetty HTTP Server on")
+    else port
   }
 
 
