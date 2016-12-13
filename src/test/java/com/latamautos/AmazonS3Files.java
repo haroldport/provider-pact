@@ -40,6 +40,7 @@ public class AmazonS3Files {
                     System.out.println(" - " + objectSummary.getKey() + "  " +
                             "(size = " + objectSummary.getSize() +
                             ")");
+                    System.out.println("url amazon s3 ----->>>>>>>>>> " + "https://s3.amazonaws.com/microservice-pacts/" + objectSummary.getKey());
                     urlList.add("https://s3.amazonaws.com/microservice-pacts/" + objectSummary.getKey());
                 }
                 System.out.println("Next Continuation Token : " + result.getNextContinuationToken());
