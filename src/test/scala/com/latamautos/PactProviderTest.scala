@@ -46,7 +46,7 @@ class PactProviderTest extends FunSuiteLike with CorsSupport with RestInterface 
   test("validateCmd WHEN messageId is empty SHOULD return (None, None)") {
     println(s"SWAGGER_URL----->>>>>>>>>>> $SWAGGER_URL")
 
-    amazonS3Files.listfiles("microservice-p1").asScala.foreach(url => {
+    amazonS3Files.listfiles("provider-pact").asScala.foreach(url => {
       println(s"url------>>>>>>>>>>>>>>>>>>> $url")
       val validator: PactProviderValidator = PactProviderValidator.createFor(SWAGGER_URL).withConsumer("ExampleConsumer", new URL(url)).build
       println("======================validator.validate() = " + validator.validate().hasErrors)
