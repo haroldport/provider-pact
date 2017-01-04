@@ -15,14 +15,14 @@ import com.latamautos.swagger.SwaggerDocService
 import io.swagger.annotations._
 
 @Api(value = "Question CRUD")
-@Path(value = "questions2")
-trait QuestionResource extends MyResource with RouteConcatenation with CorsSupport with BootedCore {
+@Path(value = "questions")
+trait QuestionResource2 extends MyResource with RouteConcatenation with CorsSupport with BootedCore {
 
   private implicit val _ = system.dispatcher
 
   val questionService: QuestionService
 
-  def questionRoutes: Route = pathPrefix("questions2") {
+  def questionRoutes: Route = pathPrefix("questions") {
     postRoute ~
       path(Segment) { id =>
         getRoute(id) ~
