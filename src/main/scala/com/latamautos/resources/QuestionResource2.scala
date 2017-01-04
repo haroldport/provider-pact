@@ -15,14 +15,14 @@ import com.latamautos.swagger.SwaggerDocService
 import io.swagger.annotations._
 
 @Api(value = "Question CRUD")
-@Path(value = "questions2")
-trait QuestionResource extends MyResource with RouteConcatenation with CorsSupport with BootedCore {
+@Path(value = "questions")
+trait QuestionResource2 extends MyResource with RouteConcatenation with CorsSupport with BootedCore {
 
   private implicit val _ = system.dispatcher
 
   val questionService: QuestionService
 
-  def questionRoutes: Route = pathPrefix("questions2") {
+  def questionRoutes: Route = pathPrefix("questions") {
     postRoute ~
       path(Segment) { id =>
         getRoute(id) ~
@@ -32,14 +32,6 @@ trait QuestionResource extends MyResource with RouteConcatenation with CorsSuppo
   } ~
     corsHandler(new SwaggerDocService(system).routes)
 
-  @ApiOperation(value = "Post Question", notes = "Post question", nickname = "anonymousQuestion", httpMethod = "POST")
-  @ApiImplicitParams(Array(
-    new ApiImplicitParam(name = "body", required = true, dataType = "com.latamautos.entities.Question", paramType = "body")
-  ))
-  @ApiResponses(Array(
-    new ApiResponse(code = 200, message = "Return Id", response = classOf[String]),
-    new ApiResponse(code = 500, message = "Internal server error")
-  ))
   def postRoute: Route = pathEnd {
     post {
       entity(as[Question]) { question =>
