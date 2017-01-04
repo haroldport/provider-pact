@@ -55,18 +55,6 @@ class PactProviderTest extends FunSuiteLike with CorsSupport with RestInterface 
     })
   }
 
-  def gelLastPactFile:Option[File] = {
-    val file:File = new File(pactDir)
-    file.listFiles().toList
-      .map(file => Paths.get(file.getAbsolutePath))
-      .map(path => (Files.readAttributes(path, classOf[BasicFileAttributes]), path.toFile))
-      .sortWith((a, b) => a._1.creationTime().toMillis > b._1.creationTime().toMillis)
-      .map(a => a._2.getAbsoluteFile) match {
-      case file::files => Some(file)
-      case Nil => None
-    }
-  }
-
   private def findFreePort(): Int = {
     val socket: ServerSocket = new ServerSocket(0)
     var port = -1
@@ -78,7 +66,6 @@ class PactProviderTest extends FunSuiteLike with CorsSupport with RestInterface 
       try {
         socket.close()
       } catch {
-        // Ignore IOException on close()
         case e: IOException =>
       }
     } catch{

@@ -32,6 +32,14 @@ trait QuestionResource extends MyResource with RouteConcatenation with CorsSuppo
   } ~
     corsHandler(new SwaggerDocService(system).routes)
 
+  @ApiOperation(value = "Post Question", notes = "Post question", nickname = "anonymousQuestion", httpMethod = "POST")
+  @ApiImplicitParams(Array(
+    new ApiImplicitParam(name = "body", required = true, dataType = "com.latamautos.entities.Question", paramType = "body")
+  ))
+  @ApiResponses(Array(
+    new ApiResponse(code = 200, message = "Return Id", response = classOf[String]),
+    new ApiResponse(code = 500, message = "Internal server error")
+  ))
   def postRoute: Route = pathEnd {
     post {
       entity(as[Question]) { question =>
